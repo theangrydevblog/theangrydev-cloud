@@ -11,3 +11,24 @@ resource "google_container_cluster" "k8s" {
   location   = var.location
   network    = var.k8s_vpc.id
 }
+
+resource "google_container_node_pool" "k8s_node_pool" {
+  name       = "${var.name}-node-pool"
+  location   = var.location
+  cluster    = var.name
+  node_count = 1
+
+  node_config {
+    preemptible  = true
+    machine_type = "n1-standard-1"
+
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ]
+  }
+}
