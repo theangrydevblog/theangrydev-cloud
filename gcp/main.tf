@@ -3,8 +3,6 @@ provider "google" {
   project = "theangrydevblog"
 }
 
-
-
 module "vpc" {
   source = "./vpc"
 }
@@ -16,3 +14,9 @@ module "k8s" {
   k8s_vpc = module.vpc
 }
 
+module "sql" {
+  source = "./cloudsql"
+  name = "${module.k8s.name}-cloudsql-instance"
+  vpc = module.vpc
+  location = module.k8s.location
+}
