@@ -7,6 +7,10 @@ resource "google_container_cluster" "k8s" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
+  ip_allocation_policy{
+    cluster_ipv4_cidr_block = "10.0.0.0/16"
+  }
+
   name = var.name
   location   = var.location
   network    = var.k8s_vpc.id
